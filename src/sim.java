@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public class sim {
 	public static void main(String[] args) {
-        // System.out.println("Simulation start!");
+        System.out.println("args length: " + args.length);
         String type;
         String trace = "";
         int n;
@@ -25,13 +25,13 @@ public class sim {
             n = 0;
             m1 = Integer.parseInt(args[1]);
             trace = args[2];
-            myPredictor = new Gshare(n, m1);
+            myPredictor = new Gshare(m1, n);
         } else if (args.length == 4) {
             type = args[0];
-            n = Integer.parseInt(args[1]);
-            m1 = Integer.parseInt(args[2]);
+            n = Integer.parseInt(args[2]);
+            m1 = Integer.parseInt(args[1]);
             trace = args[3];
-            myPredictor = new Gshare(n, m1);
+            myPredictor = new Gshare(m1, n);
         } else if (args.length == 6) {
             type = args[0];
             k = Integer.parseInt(args[1]);
@@ -59,9 +59,10 @@ public class sim {
 			String[] operationArr;
 			while ((readLine = b.readLine()) != null) {
                 if (myPredictor!= null) {
-                myPredictor.predict();
+                myPredictor.predict(readLine);
                 }
             }
+            myPredictor.printPT();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

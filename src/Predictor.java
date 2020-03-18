@@ -3,5 +3,6 @@
  */
 public interface Predictor {
     // public void simByStep();
-    public void predict();
+    public Boolean predict(String pc);
+    public void printPT();
 }
