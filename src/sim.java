@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public class sim {
 	public static void main(String[] args) {
-        System.out.println("args length: " + args.length);
+        // System.out.println("args length: " + args.length);
         String type;
         String trace = "";
         int n;
@@ -56,12 +56,16 @@ public class sim {
 			File f = new File("../traces/" + trace);
 			BufferedReader b = new BufferedReader(new FileReader(f));
 			String readLine = "";
-			String[] operationArr;
+            String[] operationArr;
+            Integer line = 0;
 			while ((readLine = b.readLine()) != null) {
+                // System.out.println(line++ + "#");
                 if (myPredictor!= null) {
                 myPredictor.predict(readLine);
                 }
             }
+            System.out.println("OUTPUT");
+            myPredictor.printState();
             myPredictor.printPT();
 		} catch (IOException e) {
 			e.printStackTrace();

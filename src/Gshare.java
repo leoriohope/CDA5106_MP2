@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 /**
  * Gshare
  */
@@ -7,6 +9,9 @@ public class Gshare implements Predictor {
     public Integer[] PT; // Branch history table
     public Integer GBH = 0; // Global brachn history
     public Integer GBHLength;
+    // state
+    public Integer numOfPredict = 0;
+    public Integer numOfMiss = 0;
     
 
     public Gshare(Integer mInput, Integer nInput) {
@@ -21,7 +26,7 @@ public class Gshare implements Predictor {
 
     @Override
     public Boolean predict(String pc) {
-        // TODO Auto-generated method stub
+        numOfPredict++;
         Integer address = Integer.parseInt(pc.split(" ")[0], 16);
         Boolean taken = pc.split(" ")[1].equals("t") ? true : false;
         //get index
@@ -30,9 +35,12 @@ public class Gshare implements Predictor {
         Integer indexN = getIndexN(indexM);
         Integer indexMN = indexM >> n;
         Integer indexPT = n == 0 ? indexM : (indexMN << n) | (indexN ^ GBH);
-        System.out.println("indexPT: " + indexPT);
+        // System.out.println("indexPT: " + indexPT);
         // make a prediction
         Boolean result = PT[indexPT] >= 4 ? true: false;
+        if (result != taken) {
+            numOfMiss++;
+        }
         // update PT
         updatePT(indexPT, taken);
         // update GBH
@@ -42,11 +50,27 @@ public class Gshare implements Predictor {
 
     @Override
     public void printPT() {
+        if (n == 0) {
+            System.out.println("FINAL BIMODAL CONTENTS");
+        } else {
+            System.out.println("FINAL GSHARE CONTENTS");
+        }
         for (int i = 0; i < PT.length; i++) {
             System.out.println(i + "   " + PT[i]);
         }
     }
 
+    @Override
+    public void printState() {
+        System.out.println("number of predictions:  " + numOfPredict);
+        System.out.println("number of mispredictions:    " + numOfMiss);
+        double missPredictRate = (double)numOfMiss / numOfPredict;
+        // System.out.println(missPredictRate);
+        DecimalFormat df = new DecimalFormat("#.##");      
+        missPredictRate = Double.valueOf(df.format(missPredictRate * 100));
+        System.out.printf("misprediction rate:    %.2f", missPredictRate);
+        System.out.println("%");
+    }
 
     public void updateGBH(Boolean taken) {
         if (n != 0) {
@@ -88,4 +112,5 @@ public class Gshare implements Predictor {
         System.out.println(myGshare.m);
         System.out.println(myGshare.getIndexM(Integer.parseInt("302d30" , 16)));
     }
+
 }

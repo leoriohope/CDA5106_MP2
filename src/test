@@ -1,0 +1,18 @@
+#!/bin/bash
+# My first script
+
+rm v*.txt
+java sim bimodal 6 gcc_trace.txt >> v_b1.txt
+java sim bimodal 12 gcc_trace.txt >> v_b2.txt
+java sim bimodal 4 jpeg_trace.txt >> v_b3.txt
+java sim gshare 9 3 gcc_trace.txt >> v_g1.txt
+java sim gshare 14 8 gcc_trace.txt >> v_g2.txt
+java sim gshare 11 5 jpeg_trace.txt >> v_g3.txt
+java sim hybrid 8 14 10 5 gcc_trace.txt >> v_h1.txt
+diff -iw v_b1.txt ../validation_runs/val_bimodal_1.txt
+diff -iw v_b2.txt ../validation_runs/val_bimodal_2.txt
+diff -iw v_b3.txt ../validation_runs/val_bimodal_3.txt
+diff -iw v_g1.txt ../validation_runs/val_gshare_1.txt
+diff -iw v_g2.txt ../validation_runs/val_gshare_2.txt
+diff -iw v_g3.txt ../validation_runs/val_gshare_3.txt
+diff -iw v_h1.txt ../validation_runs/val_hybrid_1.txt
